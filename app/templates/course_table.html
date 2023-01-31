@@ -1,0 +1,86 @@
+{% extends "base1.html" %} 
+{% block css %} 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/course_table.css') }}" />
+{% endblock %}
+{% block title %}Course Table{% endblock %} 
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <button type="submit"
+        class="btn btn-dark w-25"
+        onclick="window.location.href='{{ url_for( 'routes.add_course') }}';"
+        >
+            Add Course
+        </button>
+        <span class="spacer"></span>
+        <div class="input-group w-50">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon1">Search</button>
+            <input type="text" class="form-control" onkeyup="liveSearch(this.value)" placeholder="Name or ID" aria-label="Example text with button addon" aria-describedby="button-addon1">
+        </div>
+    </div>
+</div>
+
+<div class="container container-config">
+    <div class="container">
+        <h2>Course List</h2>
+        
+        <div id="course_table_test">
+            {% for course in courses %}
+            <div class="custom-card card mt-3 py-3">
+                <div class="row">
+                    <div class="col-2">
+                        <div class="card-body border-end border-dark border-1">
+                            <h5 class="mb-0">{{course[2]}}</h5>      
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card-body border-end border-dark border-1">
+                            <h5 class="mb-0">{{course[0]}}</h5>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card-body border-end border-dark border-1">
+                            <h6>{{course[1]}}</h6>
+                        </div>
+                    </div>
+                    <div class="col-1 d-flex justify-content-center align-items-center">
+                        <a class="btn btn-primary change-width" href="{{ url_for("routes.edit_course", course_id=course[0]) }}">Edit</a>
+                    </div>
+                    <div class="col-auto d-flex justify-content-center align-items-center">
+                        <a class="btn btn-danger" href="{{ url_for("routes.delete_course", course_id=course[0]) }}">Delete</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %} 
+<script>
+    
+    function liveSearch(value){
+        
+
+        $.ajax({
+            url:"{{ url_for("routes.search_course") }}",
+            data:{searchText: value},
+            
+            type:"GET",
+
+            success: function(data){
+                console.log(data)
+                $('#course_table_test').html(data);
+            }
+        });
+    }
+    $('#searchinput').keyup(function(){
+        var search = $(this).val();
+        load_data(search);
+    });
+
+</script>
+{% endblock %}

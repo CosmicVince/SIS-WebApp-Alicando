@@ -1,0 +1,78 @@
+{% extends "base1.html" %} 
+{% block css %} 
+{% endblock %}
+{% block title %}Course Table{% endblock %} 
+{% block content %}
+
+<!-- Add Course -->
+<div class="container mt-5">
+    <span></span>
+</div>
+
+<div class="container mb-4">
+    <h2>Add Course</h2>
+</div>
+
+<form class="" method = "post">
+    {{ form.hidden_tag() }}
+    <div class="">
+        <div class=""> 
+            <div class="container form-floating mb-3 w-75">
+                {{ form.course_code(class="form-control", id="course", placeholder="Course Code") }}
+                <label class="ms-3" for="course">Course Code</label>
+            </div>
+
+            <div class="container form-floating mb-3 w-75">
+                {{ form.course_name(class="form-control", id="course_name", placeholder="Course Name") }}
+                <label class="ms-3" for="course_name">Course Name</label>
+            </div>
+
+            <div class="container form-floating mb-3 w-75">
+                {{ form.college_code(class="form-select", id="college", placeholder="a") }}
+                <label class="ms-3" for="college">College</label>
+            </div>
+
+
+            <div class="container form-floating mb-3 w-75">
+                <button
+                    type="submit"
+                    class="btn btn-sm mt-2"
+                    style="background-color: #505050 !important;"
+                    value=""
+                    name="submit"
+                >
+                    <span class="landing-page-card" style="color: white !important; font-size: 1.5em;">Add Course</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+{% endblock %} 
+
+{% block scripts %} 
+<script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+
+<script type="text/javascript">  
+
+    var url = '';
+    var myWidget = cloudinary.createUploadWidget({
+       cloudName: 'ds8zcsbpr', 
+       uploadPreset: 'sis_cloudinary' }, (error, result) => { 
+          if (!error && result && result.event === "success") { 
+          console.log('Done! Here is the image info: ', result.info.secure_url); 
+          url = result.info.secure_url;
+          document.getElementById('profile_url').value = url;
+          var el = document.getElementById("profile_pic")
+          el.src = url
+          }
+       }
+    )
+             
+    document.getElementById("upload_widget").addEventListener("click", function(){ 
+          myWidget.open();  
+       }, false);
+   
+</script>
+{% endblock %}

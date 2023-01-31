@@ -1,0 +1,142 @@
+{% extends "base.html" %} 
+{% block css %} 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/add_student.css') }}" />
+{% endblock %}
+{% block title %}Student Table{% endblock %} 
+{% block content %}
+
+<!-- Add Student -->
+<div class="container mt-5">
+    <span></span>
+</div>
+
+<div class="container mb-4">
+    <h2>Edit Student</h2>
+</div>
+
+<form class="" method = "post">
+    {{ form.hidden_tag() }}
+    <div class="">
+        <div class="">
+            <div class="container mb-3 w-75">
+                <div class="row">
+                    <div class="col-2">
+                        {% if form.profile_url.data == None %}
+                            <img id = profile_pic src = {{ url_for('static', filename='/images/temp_picture.png') }} alt="Profile Pic" class = "profile-pic img-thumbnail rounded-circle shadow-lg">
+                        {% else %}
+                            <img id = profile_pic src= {{form.profile_url.data}} alt="Profile Pic" class = "profile-pic rounded-circle shadow-lg">
+                        {% endif %}
+                        {{form.profile_url}}
+                        <div class="" >
+                        {% for error in form.profile_url.errors %}
+                            <span style="color: red; margin-left: 35px;">[{{ error }}]</span>
+                        {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" id="upload_widget" class="btn btn-dark mt-4">Upload Photo</button>
+                    </div>
+                </div>    
+            </div>
+            
+            <div class="container mb-3 w-75">
+                <div class="row">
+                    <div class="col form-floating me-5">
+                        {{ form.idnum(class="form-control w-50", id="id", placeholder="2022-0001") }}
+                        <label class="ms-3" for="id">ID Number</label>
+                    </div>
+                    <div class="col pt-3">
+                        <label class="me-5">Gender:</label>
+                        {% for subfield in form.gender %}
+                            {{ subfield(class="form-check-input") }}
+                            {{ subfield.label(class="me-5") }}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="container form-floating mb-3 w-75">
+                {{ form.name(class="form-control", id="name", placeholder="a") }}
+                <label class="ms-3" for="name">Name</label>
+            </div>
+
+            <div class="container form-floating mb-3 w-75">
+                {{ form.college_code(class="form-select", id="college", placeholder="a") }}
+                <label class="ms-3" for="college">College</label>
+            </div>
+
+            <div class="container form-floating mb-3 w-75">
+                {{ form.course_code(class="form-select", id="course", placeholder="") }}
+                <label class="ms-3" for="course">Course</label>
+            </div>
+
+            <div class="container form-floating mb-3 w-75">
+                {{ form.year_level(class="form-select", id="yrlevel", placeholder="") }}
+                <label class="ms-3" for="yrlevel">Year Level</label>
+            </div>
+
+            <div class="container form-floating mb-3 w-75">
+                <button
+                    type="submit"
+                    class="btn btn-sm mt-2"
+                    style="background-color: #505050 !important;"
+                    value=""
+                    name="submit"
+                >
+                    <span class="landing-page-card" style="color: white !important; font-size: 1.5em;">Save Changes</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+{% endblock %} 
+
+{% block scripts %} 
+<script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+
+<script type="text/javascript">  
+
+    var url = '';
+    var myWidget = cloudinary.createUploadWidget({
+       cloudName: 'ds8zcsbpr', 
+       uploadPreset: 'sis_cloudinary' }, (error, result) => { 
+          if (!error && result && result.event === "success") { 
+          console.log('Done! Here is the image info: ', result.info.secure_url); 
+          url = result.info.secure_url;
+          document.getElementById('profile_url').value = url;
+          var el = document.getElementById("profile_pic")
+          el.src = url
+          }
+       }
+    )
+             
+    document.getElementById("upload_widget").addEventListener("click", function(){ 
+          myWidget.open();  
+       }, false);
+   
+</script>
+
+<script>
+    let college_select = document.getElementById('college');
+    let course_select = document.getElementById('course');
+
+    college_select.onchange = function() {
+        college = college_select.value;
+        
+        fetch('/add_student/' + college).then(function(response) {
+            response.json().then(function(data) {
+                let optionHTML = '';
+                for (let course of data.courses) {
+                    optionHTML += '<option value="' + course.name + '">' + course.name + '</option>';
+                }
+
+                course_select.innerHTML = optionHTML;
+
+            });
+        });
+    }
+
+</script>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% for college in colleges %}
+<div class="custom-card card mt-3 py-3">
+    <div class="row">
+        <div class="col-2">
+            <div class="card-body border-end border-dark border-1">
+                <h5 class="mb-0">{{college[0]}}</h5>      
+            </div>
+        </div>
+        <div class="col-7">
+            <div class="card-body border-end border-dark border-1">
+                <h5>{{college[1]}}</h5>
+            </div>
+        </div>
+        <div class="col-1 d-flex justify-content-center align-items-center">
+            <a class="btn btn-primary change-width" href="{{ url_for("routes.edit_college", college_id=college[0]) }}">Edit</a>
+        </div>
+        <div class="col-auto d-flex justify-content-center align-items-center">
+            <a class="btn btn-danger" href="{{ url_for("routes.delete_college", college_id=college[0]) }}">Delete</a>
+        </div>
+    </div>
+</div>
+{% endfor %}

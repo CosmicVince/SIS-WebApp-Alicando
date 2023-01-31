@@ -1,0 +1,6 @@
+.custom-card{
+    padding: .7em .7em .7em;
+    border-radius: 1.5em;
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    background-color: rgba(191, 248, 255, 0.6);
+}

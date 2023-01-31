@@ -1,0 +1,29 @@
+.nav-pills .active {
+    background-color: #bcbcbc !important;
+}
+
+/* Student_table */
+.container-config {
+    
+    margin-top: 50px;
+}
+
+.spacer {
+    width: 50px;
+}
+
+.custom-card{
+    padding: .7em .7em .7em;
+    border-radius: 1.5em;
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    background-color: rgb(255, 255, 206, 0.4);
+}
+
+.profile-pic {
+    height: 150px;
+    width: 150px;
+}
+
+.change-width {
+    width: 120px;
+}

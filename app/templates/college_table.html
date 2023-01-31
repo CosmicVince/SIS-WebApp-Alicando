@@ -1,0 +1,81 @@
+{% extends "base2.html" %} 
+{% block css %} 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/college_table.css') }}" />
+{% endblock %}
+{% block title %}College Table{% endblock %} 
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row">
+        <button type="submit"
+        class="btn btn-dark w-25"
+        onclick="window.location.href='{{ url_for( 'routes.add_college') }}';"
+        >
+            Add College
+        </button>
+        <span class="spacer"></span>
+        <div class="input-group w-50">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon1">Search</button>
+            <input type="text" class="form-control" onkeyup="liveSearch(this.value)" placeholder="Name or ID" aria-label="Example text with button addon" aria-describedby="button-addon1">
+        </div>
+    </div>
+</div>
+
+<div class="container container-config">
+    <div class="container">
+        <h2>College List</h2>
+        
+        <div id="college_table_test">
+            {% for college in colleges %}
+            <div class="custom-card card mt-3 py-3">
+                <div class="row">
+                    <div class="col-2">
+                        <div class="card-body border-end border-dark border-1">
+                            <h5 class="mb-0">{{college[0]}}</h5>      
+                        </div>
+                    </div>
+                    <div class="col-7">
+                        <div class="card-body border-end border-dark border-1">
+                            <h5>{{college[1]}}</h5>
+                        </div>
+                    </div>
+                    <div class="col-1 d-flex justify-content-center align-items-center">
+                        <a class="btn btn-primary change-width" href="{{ url_for("routes.edit_college", college_id=college[0]) }}">Edit</a>
+                    </div>
+                    <div class="col-auto d-flex justify-content-center align-items-center">
+                        <a class="btn btn-danger" href="{{ url_for("routes.delete_college", college_id=college[0]) }}">Delete</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %} 
+<script>
+    
+    function liveSearch(value){
+        
+
+        $.ajax({
+            url:"{{ url_for("routes.search_college") }}",
+            data:{searchText: value},
+            
+            type:"GET",
+
+            success: function(data){
+                console.log(data)
+                $('#college_table_test').html(data);
+            }
+        });
+    }
+    $('#searchinput').keyup(function(){
+        var search = $(this).val();
+        load_data(search);
+    });
+
+</script>
+{% endblock %}
